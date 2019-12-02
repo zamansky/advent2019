@@ -16,16 +16,17 @@
 (defn calc-mass-part1 [mass]
   (- (quot mass 3) 2))
 
-(defn part1 [masses]
+(defn part1
   "calculate fuel for each mass then sum them all"
+  [masses]
   (reduce + (map calc-mass-part1 masses)))
 
 
 
 (defn calc-mass-part2
+  "Same as part 1 but loop to calculate fuel for the fuel"
   ([mass] (calc-mass-part2 mass 0))
   ([mass cost]
-   "Same as part 1 but loop to calculate fuel for the fuel"
    (let [fuel (calc-mass-part1 mass)]
      (if (<= fuel 0)
        cost
