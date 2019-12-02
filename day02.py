@@ -1,8 +1,7 @@
  
 data  = [ int(x) for x in open("day02.dat").read().split(",")]
 
-def run_program(data):
-    program = data[:]
+def run_program(program):
     ip = 0
     while True:
         op = program[ip]
@@ -18,7 +17,8 @@ def run_program(data):
         ip = ip + 4
     return program[0]
 
-def part1(program):
+def part1(data):
+    program = data[:]
     program[1]=12
     program[2]=2
     return run_program((program))
