@@ -60,3 +60,4 @@
 
 (reverse (sort #(compare (first %1) (first %2)) (map #(lines % meteors) meteors)))
 (def z ( map #(lines % meteors) meteors))
+q
