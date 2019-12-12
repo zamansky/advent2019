@@ -98,6 +98,8 @@
   (mapv #(get (:v %) axis)moons )
   )
 
+;; for part 2
+;; find the cycle length for each axis then find the lcm
 (defn find-cycle [init-moons axis]
   (let [test-coords (get-location-axis init-moons axis)
         final-state (loop [moons (single-move init-moons)  count 1]
