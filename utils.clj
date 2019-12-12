@@ -9,3 +9,11 @@
 (defn char->int [c]
   (Long/parseLong (String/valueOf c)))
 
+(defn gcd [a b]
+  (if (zero? b)
+    a
+    (recur b (mod a b))))
+
+(defn lcm [a b]
+  (/ (abs (* a b))
+     (gcd a b)))
