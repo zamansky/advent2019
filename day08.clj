@@ -47,5 +47,5 @@
       (println (apply str  line)))
     ))
 
-(part1 raw-data)
-(part2 raw-data)
+;; (part1 raw-data)
+;; (part2 raw-data)

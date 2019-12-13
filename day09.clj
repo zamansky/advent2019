@@ -162,5 +162,5 @@
       :else (recur (do-op fullop {:program program :current current}) ))))
 
 
-(process {:program input9 :current 0})
-(println @output)
+;;(process {:program input9 :current 0})
+;;(println @output)

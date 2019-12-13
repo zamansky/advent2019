@@ -57,7 +57,7 @@
        (filter part2-isvalidpassword)
        count))
 
-(time  (part1 372304 847060))
-(time  (part2 372304 847060))
-(time  (part1-threading  372304 847060))
-(time  (part2-threading 372304 847060))
+;; (time  (part1 372304 847060))
+;; (time  (part2 372304 847060))
+;; (time  (part1-threading  372304 847060))
+;; (time  (part2-threading 372304 847060))

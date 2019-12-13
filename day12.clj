@@ -113,6 +113,6 @@
     final-state))
 
 
-(def cycle-lengths (map #(find-cycle input %) [0 1 2]))
+;; (def cycle-lengths (map #(find-cycle input %) [0 1 2]))
 
-(def part2ans  (reduce u/lcm cycle-lengths))
+;; (def part2ans  (reduce u/lcm cycle-lengths))

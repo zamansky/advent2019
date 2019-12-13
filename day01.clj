@@ -36,8 +36,8 @@
   (reduce + (map calc-mass-part2 masses )))
 
 (defn main []
-(println (str "Part1: " (part1 masses)))
-(println (str "Part2: " (part2 masses)))
-)
+  (println (str "Part1: " (part1 masses)))
+  (println (str "Part2: " (part2 masses)))
+  )
 
-(main)
+;; (main)

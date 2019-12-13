@@ -144,6 +144,7 @@
                      (= opcode 7) (do-op7 fullop payload)
                      (= opcode 8) (do-op8 fullop payload)
                      (= opcode 9) (do-op9 fullop payload)
+                     :else payload
                      )]
     newpayload
     ))

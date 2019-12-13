@@ -98,6 +98,7 @@
                                          [] z2 )))))
 
 
-(filter (fn [x] (< (u/abs (- (first x)  a)) 0.00001)) z)
+;; (filter (fn [x] (< (u/abs (- (first x)  a)) 0.00001)) z)
 
-(filter #(= (last %) '(3 17)) z)
+;; (filter #(= (last %) '(3 17)) z)
+;; 
