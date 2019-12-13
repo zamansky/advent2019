@@ -71,7 +71,7 @@
   (let [b (get-write-param program current modes 0 base)
         ]
     (if input
-      {:program (assoc program  b  input) :current (+ current 2) :base base :input input :output output}
+      {:program (assoc program  b  input) :current (+ current 2) :base base :input nil :output output}
       {:program program :current current :base base :status :needs-input :output output}
 
       )))

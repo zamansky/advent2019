@@ -22,6 +22,7 @@
   )
 
 (defn calc-new-velocity [moon moons]
+  ;; first remove the moon we're figuring out the velocity for
   (let [m (filterv #(not (= (:loc moon) (:loc %))) moons)
         ]
     (reduce (fn  [moon nextmoon]
@@ -31,6 +32,7 @@
                     ]
                 (assoc moon :v newv )
                 )) moon m)))
+
 
 (defn calc-new-velocities [moons]
   (map #(calc-new-velocity % moons) moons))
