@@ -15,7 +15,6 @@
     ))
 
 
-(def output (atom []))
 
 
 (defn get-param [program current modes param-num base]
@@ -79,8 +78,7 @@
 
 (defn do-op4 [{:keys [opcode modes] :as fullop} {:keys [program current base input] :as payload}]
   (let [value (get-param program current modes 0 base) ]
-    (swap! output conj value)
-    {:program program :current (+ current 2) :base base :input input} )
+    {:program program :current (+ current 2) :base base :input input :output value :status :output} )
   )
 
 
@@ -162,5 +160,6 @@
     (cond
       (= status :exit) nextpayload
       (= status :needs-input) nextpayload
+      (= status :output) nextpayload
       :else (recur nextpayload ))))
 
