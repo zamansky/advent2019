@@ -11,6 +11,6 @@
   )
 
 
-(ic/run-code {:program source :current 0 :base 0})
+(ic/run-code {:program source :current 0 :base 0 :input 2 })
 
-
+@ic/output
