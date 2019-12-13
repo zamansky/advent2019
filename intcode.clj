@@ -50,7 +50,7 @@
     {:opcode opcode :modes modes }
     ))
 
-(defn do-op1-2 [{:keys [opcode modes] :as fullop} {:keys [program current  base input] :as payload}]
+(defn do-op1-2 [{:keys [opcode modes] :as fullop} {:keys [program current  base input output] :as payload}]
   ;;(println "op12: " fullop (count program) current)
   (let [a (get-param program current modes 0 base)
         b (get-param program current modes 1 base) 
@@ -60,81 +60,81 @@
                   (+ a b)
                   (* a b)
                   )]
-    {:program (assoc program  c result) :current (+ current 4) :base base :input input}
+    {:program (assoc program  c result) :current (+ current 4) :base base :input input :output output}
     ))
 
 
 
 
-(defn do-op3 [{:keys [opcode modes] :as fullop} {:keys [program current base input] :as payload}]
+(defn do-op3 [{:keys [opcode modes] :as fullop} {:keys [program current base input output] :as payload}]
   ;;(println "op3: " fullop (count program) current)
   (let [b (get-write-param program current modes 0 base)
         ]
     (if input
-      {:program (assoc program  b  input) :current (+ current 2) :base base :input input}
-      {:program program :current current :base base :status :needs-input}
+      {:program (assoc program  b  input) :current (+ current 2) :base base :input input :output output}
+      {:program program :current current :base base :status :needs-input :output output}
 
       )))
 
-(defn do-op4 [{:keys [opcode modes] :as fullop} {:keys [program current base input] :as payload}]
+(defn do-op4 [{:keys [opcode modes] :as fullop} {:keys [program current base input output] :as payload}]
   (let [value (get-param program current modes 0 base) ]
-    {:program program :current (+ current 2) :base base :input input :output value :status :output} )
+    {:program program :current (+ current 2) :base base :input input  :status :output :output (conj output value)} )
   )
 
 
 
 
-(defn do-op5 [{:keys [opcode modes] :as fullop} {:keys [program current base input] :as payload}]
+(defn do-op5 [{:keys [opcode modes] :as fullop} {:keys [program current base input output] :as payload}]
   (let [a (get-param program current modes 0 base)
         b (get-param program current modes 1 base)
         ]
     (if (= a 0)
-      {:program program :current (+ current 3) :base base :input input}
-      {:program program :current b :base base :input input} )
+      {:program program :current (+ current 3) :base base :input input :output output }
+      {:program program :current b :base base :input input :output output } )
     ))
 
-(defn do-op6 [{:keys [opcode modes] :as fullop} {:keys [program current base input] :as payload}]
+(defn do-op6 [{:keys [opcode modes] :as fullop} {:keys [program current base input output] :as payload}]
   (let [a (get-param program current modes 0 base)
         b (get-param program current modes 1 base)
 
         ]
     ;;(println "OP6 " fullop a b)
     (if (= a 0)
-      {:program program :current b :base base :input input}
-      {:program program :current (+ current 3) :base base :input input}
+      {:program program :current b :base base :input input :output output }
+      {:program program :current (+ current 3) :base base :input input :output output}
       )) )
 
 
-(defn do-op7 [{:keys [opcode modes] :as fullop} {:keys [program current base input] :as payload}]
+(defn do-op7 [{:keys [opcode modes] :as fullop} {:keys [program current base input output] :as payload}]
   (let [a (get-param program current modes 0 base )
         b (get-param program current modes 1 base )
         c (get-write-param program current modes 2 base)
         ]
     (if (< a b)
-      {:program (assoc program c 1) :current (+ current 4) :base base :input input}
-      {:program (assoc program c 0) :current (+ current 4) :base base :input input}
+      {:program (assoc program c 1) :current (+ current 4) :base base :input input :output output }
+      {:program (assoc program c 0) :current (+ current 4) :base base :input input :output output}
       )) )
 
-(defn do-op8 [{:keys [opcode modes] :as fullop} {:keys [program current base input] :as payload}]
+(defn do-op8 [{:keys [opcode modes] :as fullop} {:keys [program current base input output] :as payload}]
   (let [a (get-param program current modes 0 base)
         b (get-param program current modes 1 base)
         c (get-write-param program current modes 2 base) 
         ]
     (if (= a b)
-      {:program (assoc program c 1) :current (+ current 4) :base base :input input}
-      {:program (assoc program c 0) :current (+ current 4) :base base :input input}
+      {:program (assoc program c 1) :current (+ current 4) :base base :input input :output output}
+      {:program (assoc program c 0) :current (+ current 4) :base base :input input :output output}
       )) )
 
-(defn do-op9 [{:keys [opcode modes] :as fullop} {:keys [program current base input] :as payload}]
+(defn do-op9 [{:keys [opcode modes] :as fullop} {:keys [program current base input output] :as payload}]
   (let [param (get-param program current modes 0 base)
         ]
-    {:program program :current (+ current 2) :base (+ base param) :input input}
+    {:program program :current (+ current 2) :base (+ base param) :input input :output output}
     ))
 
-(defn do-op [{:keys [opcode modes] :as fullop} {:keys [program current base input] :as payload}]
-  ;;(println "DOOP: " fullop "input: " @input "Output: " @output current "BASE: " base)
+(defn do-op [{:keys [opcode modes] :as fullop} {:keys [program current base input output] :as payload}]
+  ;;(println "DOOP: " fullop "input: " input "Output: " output current "BASE: " base)
   (let [newpayload (cond
-                     (= opcode 99) {:program program :current current :status :exit}
+                     (= opcode 99) {:program program :current current :status :exit :output output}
                      (= opcode 1) (do-op1-2 fullop payload)
                      (= opcode 2) (do-op1-2 fullop payload)
                      (= opcode 3) (do-op3 fullop payload)
@@ -160,6 +160,5 @@
     (cond
       (= status :exit) nextpayload
       (= status :needs-input) nextpayload
-      (= status :output) nextpayload
       :else (recur nextpayload ))))
 

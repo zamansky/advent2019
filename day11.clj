@@ -11,7 +11,6 @@
   )
 
 
-(def res (ic/run-code {:program source :current 0 :base 0 :input 2 }))
+(def res (ic/run-code {:program source :current 0 :base 0 :input 1 :output []}))
 (:status res)
 (:output res)
-@ic/output
