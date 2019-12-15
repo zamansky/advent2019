@@ -9,7 +9,7 @@
         data (->> (string/split raw-data #",")
                   (map  u/parse-int)
                   (into []))
-        source (into data (take 100000 (repeat 0)))
+        source (into data (take 5000 (repeat 0)))
         ]
     source
     ))
@@ -67,14 +67,15 @@
 
 
 (defn do-op3 [{:keys [opcode modes] :as fullop} {:keys [program current base input output] :as payload}]
-  ;;(println "op3: " fullop (count program) current)
+  
   (let [b (get-write-param program current modes 0 base)
+        result     (if input
+                     {:program (assoc program  b  input) :current (+ current 2) :base base :input nil :output output}
+                     {:program program :current current :base base :status :needs-input :input nil :output output}
+                     )
         ]
-    (if input
-      {:program (assoc program  b  input) :current (+ current 2) :base base :input nil :output output}
-      {:program program :current current :base base :status :needs-input :output output}
-
-      )))
+    result
+    ))
 
 (defn do-op4 [{:keys [opcode modes] :as fullop} {:keys [program current base input output] :as payload}]
   (let [value (get-param program current modes 0 base) ]
@@ -154,10 +155,10 @@
         current (:current payload)
         op (get program current)
         fullop (parse-op op)
-        payload payload
         nextpayload (do-op fullop payload)
         status (:status nextpayload)
         ]
+    ;;(println "HELLO")
     (cond
       (= status :exit) nextpayload
       (= status :needs-input) nextpayload
