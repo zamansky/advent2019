@@ -118,10 +118,10 @@
       )))
 
 (defn part2 [payload]
-  (let [themap (make-map [(assoc payload :pos [0 0] :step 0)] #{} {})
-        themap (into {}  (map (fn [x] [(first x) 0])) themap)
-        themap (bfs [{:pos [16 14] :step 0}] #{} themap)
-        ans (apply max (map #(second %) themap))
+  (let [themap (make-map [(assoc payload :pos [0 0] :step 0)] #{} {}) ;; like part 1
+        themap (into {}  (map (fn [x] [(first x) 0])) themap) ;; make  a dict with pos as key and steps as value
+        themap (bfs [{:pos [16 14] :step 0}] #{} themap) ;; do bfs which will add steps to the map
+        ans (apply max (map #(second %) themap)) ;; find the max step
         ]
 
     ans
