@@ -42,11 +42,14 @@
       (cond
         (= status :exit) board
         :else (recur newboard
-                     (assoc payload :output [] :input nextcolor :status nil)
+                     (if (= (:status payload) :needs-input)
+                       (assoc payload :output [] :input nextcolor :status nil)
+                       (assoc payload :output []))
+                     
                      newrobot
                      newdir
                      )
         ))))
 
 
-;; (count  (part1 {:program source :current 0 :base 0 :input 0 :output []}))
+(count  (part1 {:program source :current 0 :base 0 :input 0 :output []}))

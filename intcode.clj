@@ -79,10 +79,9 @@
 
 (defn do-op4 [{:keys [opcode modes] :as fullop} {:keys [program current base input output] :as payload}]
   (let [value (get-param program current modes 0 base) ]
+    ;;(prn (conj output value))
     {:program program :current (+ current 2) :base base :input input  :status :output :output (conj output value)} )
   )
-
-
 
 
 (defn do-op5 [{:keys [opcode modes] :as fullop} {:keys [program current base input output] :as payload}]
@@ -158,7 +157,7 @@
         nextpayload (do-op fullop payload)
         status (:status nextpayload)
         ]
-    ;;(println "HELLO")
+    ;; (prn status fullop)
     (cond
       (= status :exit) nextpayload
       (= status :needs-input) nextpayload
